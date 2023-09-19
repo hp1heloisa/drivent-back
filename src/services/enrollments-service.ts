@@ -1,6 +1,5 @@
 import { Address, Enrollment } from '@prisma/client';
 import { request } from '@/utils/request';
-import { notFoundError } from '@/errors';
 import { addressRepository, CreateAddressParams, enrollmentRepository, CreateEnrollmentParams } from '@/repositories';
 import { exclude } from '@/utils/prisma-utils';
 import { badRequestFound } from '@/errors/badRequest';
@@ -10,12 +9,12 @@ async function getAddressFromCEP(cep: string) {
 
   if (result.data.erro) throw badRequestFound();
 
-  let addressFormated = {
+  const addressFormated = {
     logradouro: result.data.logradouro,
     complemento: result.data.complemento,
     bairro: result.data.bairro,
     cidade: result.data.localidade,
-    uf: result.data.uf
+    uf: result.data.uf,
   };
 
   return addressFormated;
@@ -50,7 +49,7 @@ async function createOrUpdateEnrollmentWithAddress(params: CreateOrUpdateEnrollm
   enrollment.birthday = new Date(enrollment.birthday);
   const address = getAddressForUpsert(params.address);
 
-  const resp = await getAddressFromCEP(address.cep);
+  await getAddressFromCEP(address.cep);
 
   const newEnrollment = await enrollmentRepository.upsert(params.userId, enrollment, exclude(enrollment, 'userId'));
 
