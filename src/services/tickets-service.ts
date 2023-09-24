@@ -1,6 +1,7 @@
 import { notFoundError } from "@/errors";
 import { enrollmentRepository } from "@/repositories";
 import { ticketRepository } from "@/repositories/tickets-repository"
+import dayjs from "dayjs";
 
 async function getTicketTypes(){
     const types = await ticketRepository.getTicketTypes();
@@ -17,7 +18,7 @@ async function getUserTickets(userId: number){
 
 async function postTicket(userId: number, ticketTypeId: number){
     const enrollmentOk = await enrollmentRepository.findEnrollmentByUserId(userId);
-    if (!enrollmentOk.id){
+    if (enrollmentOk == null){
         throw notFoundError();
     }
     const post = await ticketRepository.postTicket(ticketTypeId, enrollmentOk.id);
@@ -28,8 +29,8 @@ async function postTicket(userId: number, ticketTypeId: number){
         ticketTypeId: post.ticketTypeId,
         enrollmentId: post.enrollmentId,
         TicketType,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt
+        createdAt: dayjs(post.createdAt).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'),
+        updatedAt: dayjs(post.updatedAt).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]')
     };
     
 }
