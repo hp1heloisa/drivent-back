@@ -13,7 +13,7 @@ async function getUserTickets(userId: number){
     if (tickets.length < 1){
         throw notFoundError();
     }
-    return tickets;
+    return tickets[0];
 }
 
 async function postTicket(userId: number, ticketTypeId: number){
