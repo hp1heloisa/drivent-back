@@ -21,6 +21,7 @@ async function create(data: Prisma.UserUncheckedCreateInput) {
   });
 }
 
+
 export const userRepository = {
   findByEmail,
   create,
