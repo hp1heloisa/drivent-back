@@ -1,7 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/config';
 import { TicketUser } from '@/protocols';
-import dayjs from 'dayjs';
 
 async function getTicketTypes() {
     return prisma.ticketType.findMany()
@@ -39,9 +38,31 @@ async function getTicketTypeById(id: number){
     })
 }
 
+async function getTicketById(id: number){
+    return prisma.ticket.findFirst({
+        where: {id},
+        include: {
+            TicketType: {
+                select: {
+                    price: true
+                }
+            }
+        }
+    })
+}
+
+async function updateTicket(id: number){
+    return prisma.ticket.update({
+        where: {id},
+        data: {status: 'PAID'}
+    })
+}
+
 export const ticketRepository = {
     getTicketTypes,
     getUserTickets,
     postTicket,
-    getTicketTypeById
+    getTicketTypeById,
+    getTicketById,
+    updateTicket
 }

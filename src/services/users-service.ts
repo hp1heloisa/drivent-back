@@ -33,5 +33,5 @@ async function canEnrollOrFail() {
 export type CreateUserParams = Pick<User, 'email' | 'password'>;
 
 export const userService = {
-  createUser,
+  createUser
 };
