@@ -9,7 +9,7 @@ type CardData = {
     issuer: 'VISA' | 'MASTERCARD',
     number: string,
     name: string,
-    expirationDate: Date,
+    expirationDate: string,
     cvv: string
 }
 
@@ -48,6 +48,9 @@ async function payTicketInfo(ticketId: number, userId: number) {
         throw unauthorizedError();
     }
     const payInfo = await paymentRepository.payTicketInfo(ticketId);
+    if (payInfo == null){
+        throw notFoundError();
+    }
     return payInfo;
 }
 

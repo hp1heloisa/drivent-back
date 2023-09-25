@@ -7,6 +7,6 @@ export const payTicketSchema = Joi.object({
         number: Joi.string().required(),
         name: Joi.string().required(),
         expirationDate: Joi.string().isoDate().required(),
-        cvv: Joi.number().required()
+        cvv: Joi.string().required()
     }).required()
 })
