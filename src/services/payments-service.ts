@@ -6,7 +6,7 @@ import { ticketRepository } from "@/repositories/tickets-repository"
 import { Payment } from "@prisma/client";
 
 type CardData = {
-    issuer: 'VISA' | 'MASTERCARD',
+    issuer: string,
     number: string,
     name: string,
     expirationDate: string,
@@ -29,7 +29,7 @@ async function payTicket(ticketId: number, cardData: CardData, userId: number) {
         ticketId,
         value: ticketIdOk.TicketType.price,
         cardIssuer: cardData.issuer,
-        cardLastDigits: cardData.number.slice(-3)
+        cardLastDigits: cardData.number.slice(-4)
     }
     const resp = await paymentRepository.payTicket(payData)
     return resp;
